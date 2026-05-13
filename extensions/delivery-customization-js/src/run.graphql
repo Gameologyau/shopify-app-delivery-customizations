@@ -1,0 +1,41 @@
+query RunInput {
+  cart {
+    lines{
+      merchandise{
+        ... on ProductVariant{
+          id
+          product{
+            hasPreorderTag: hasAnyTag(tags: ["preorder"])
+            hasPickupTag: hasAnyTag(tags: ["Pick-up Only", "Store Only"])
+          }
+        }
+        __typename
+      }
+    }
+    deliveryGroups {
+      deliveryAddress {
+        countryCode
+        provinceCode
+        zip
+      }
+      deliveryOptions {
+        handle
+        title
+        code
+      }
+    }
+    cost {
+      subtotalAmount {
+        amount
+      }
+    }
+  }
+  deliveryCustomization {
+    metafield(
+      namespace: "$app:delivery-customization"
+      key: "function-configuration"
+    ) {
+      value
+    }
+  }
+}

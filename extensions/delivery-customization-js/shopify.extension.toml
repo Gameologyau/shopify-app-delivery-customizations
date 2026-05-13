@@ -1,0 +1,21 @@
+api_version = "2026-04"
+uid = "4deba0db-d42c-8ec5-c6cd-6d10b2b6bfa2b3169b8c"
+
+[[extensions]]
+handle = "delivery-customization-js"
+name = "t:name"
+description = "t:description"
+type = "function"
+
+  [[extensions.targeting]]
+  target = "purchase.delivery-customization.run"
+  input_query = "src/run.graphql"
+  export = "run"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"
+
+  [extensions.ui.paths]
+  create = "/app/delivery-customization/:functionId/new"
+  details = "/app/delivery-customization/:functionId/:id"
