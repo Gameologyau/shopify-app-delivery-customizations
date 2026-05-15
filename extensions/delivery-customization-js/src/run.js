@@ -48,13 +48,13 @@ export function run(input) {
         
 
         var hasPickupTag = CartLines.merchandise.product.hasPickupTag;
-        if(hasPickupTag){
+        if(hasPickupTag == true){
           HasPickupOnlyProducts = true;
           break;
         }
 
         var hasPreorderTag = CartLines.merchandise.product.hasPreorderTag;
-        if(hasPreorderTag){
+        if(hasPreorderTag == true){
           HideToNightShipping = true;
           break;
         }
@@ -66,16 +66,13 @@ export function run(input) {
     input?.deliveryCustomization?.metafield?.value ?? "{}"
   );
   
-  if (configuration.CountryCode1 == '' || configuration.CartValue1 == null || configuration.CountryCode2 == '' || configuration.CartValue2 == null || configuration.CountryCode3 == '' ||  configuration.CartValue3 == null) {
-    return NO_CHANGES;
-  }
 
   const orderSubtotal = parseFloat(input.cart.cost.subtotalAmount.amount); 
 
   
   const ShippingCountry = deliveryGroups[0]?.deliveryAddress?.countryCode;
   if (!deliveryGroups.length) { return NO_CHANGES };
-
+  if (!ShippingCountry) { return NO_CHANGES };
   /* if ((orderSubtotal > configuration.CartValue2 && ShippingCountry == configuration.CountryCode2) ) {
       console.log( 'NZ Condition true');
       let toHide = input.cart.deliveryGroups
@@ -93,7 +90,7 @@ export function run(input) {
       operations: toHide
     };
   } */
-  if ((orderSubtotal > configuration.CartValue3 && ShippingCountry != configuration.CountryCode2 && ShippingCountry != configuration.CountryCode1) ) {
+  if ((orderSubtotal > configuration.CartValue && ShippingCountry != configuration.CountryCode2 && ShippingCountry != configuration.CountryCode1) ) {
       console.log( 'International Condition true');
       let toHide = input.cart.deliveryGroups
       .filter(group => group.deliveryAddress?.countryCode &&
@@ -147,6 +144,9 @@ export function run(input) {
         });
       }
       return { operations };
+    }
+    else{
+	return NO_CHANGES;	  
     }
   }
   else {
